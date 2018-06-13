@@ -31,6 +31,8 @@ class Solution {
         int p1 = m-1;
         int p2 = n-1;
         for(int i = m+n-1;i >= 0;i--){
+//        	p2 < 0
+//          nums2中的元素已经全部插入到nums1中了
             if(p2 < 0 || (p1 >= 0 && nums1[p1] > nums2[p2])){
                 nums1[i]=nums1[p1];
                 p1--;
