@@ -70,7 +70,6 @@ public class oj21_Merge_Two_Sorted_Lists {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-        System.out.println(new Solution21().mergeTwoLists());
 	}
 
 }
