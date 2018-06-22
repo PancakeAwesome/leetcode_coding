@@ -8,88 +8,89 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
  * @author edward.guan
  *
-题目： 
-Given a binary tree, return the level order traversal of its nodes’ values. (ie, from left to right, level by level).
+题目
+Given a roman numeral, convert it to an integer.
 
-For example: 
-Given binary tree {3,9,20,#,#,15,7},
+Input is guaranteed to be within the range from 1 to 3999.
 
-    3
-   / \
-  9  20
-    /  \
-   15   7
-1
-2
-3
-4
-5
-return its level order traversal as:
 
-[
-  [3],
-  [9,20],
-  [15,7]
-]
-1
-2
-3
-4
-5
-分析： 
-层次遍历二叉树，就是首先访问二叉树的第一层元素，再访问第二层，接着访问第三层，以此类推。实现的方式是，用一个先进先出的队列作为辅助数据结构，
-用levelList保存每一层的元素，用resultList保存所有的levelList，然后 
-（1）把根节点入队列，并把一个哨兵节点入队列，哨兵节点用于标识某一层已经结束 
-（2）当队列中元素个数大于1时（除哨兵节点外还有其它元素），进入循环。访问该元素，如果该元素为哨兵节点，则说明这一层已经结束了，
-并将一个哨兵节点入队，用于标识下一层结束的地方，把levelList存入resultList，并建一个新的levelList保存下一层的元素；
-否则，把该节点的值放进levelList，并把它不为null的孩子节点入队。 
-（3）把levelList加入resultList。因为最后一个哨兵节点没有办法被访问到，导致保存最后一层元素的levelList没办法在循环中被添加进resultList。
+思路
+首先，学习一下罗马数字，参考罗马数字
+
+罗马数字是最古老的数字表示方式，比阿拉伯数组早2000多年，起源于罗马
+
+罗马数字有如下符号：
+
+基本字符	I	V	X	L	C	D	M
+对应阿拉伯数字	1	5	10	50	100	500	1000
+
+计数规则：
+相同的数字连写，所表示的数等于这些数字相加得到的数，例如：III = 3
+小的数字在大的数字右边，所表示的数等于这些数字相加得到的数，例如：VIII = 8
+小的数字，限于（I、X和C）在大的数字左边，所表示的数等于大数减去小数所得的数，例如：IV = 4
+正常使用时，连续的数字重复不得超过三次
+在一个数的上面画横线，表示这个数扩大1000倍（本题只考虑3999以内的数，所以用不到这条规则）
+
+其次，罗马数字转阿拉伯数字规则（仅限于3999以内）：
+
+从前向后遍历罗马数字，如果某个数比前一个数小，则加上该数。反之，减去前一个数的两倍然后加上该数
  */
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution102 {
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> resultList = new ArrayList<List<Integer>>();
-        if (root == null) {
-            return resultList;
+class Solution13 {
+    public int charToInt(char c) {
+        int data = 0;
+
+        switch (c) {
+            case 'I':
+                data = 1;
+                break;
+            case 'V':
+                data = 5;
+                break;
+            case 'X':
+                data = 10;
+                break;
+            case 'L':
+                data = 50;
+                break;
+            case 'C':
+                data = 100;
+                break;
+            case 'D':
+                data = 500;
+                break;
+            case 'M':
+                data = 1000;
+                break;
         }
 
-        List<Integer> levelStorage = new LinkedList<Integer>();
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
-        queue.offer(null);
-        while (queue.size() > 1) {
-            TreeNode top = queue.poll();
-            if (top == null) {
-                resultList.add(levelStorage);
-                queue.offer(null);
-                levelStorage = new LinkedList<Integer>();
-            } else {
-                levelStorage.add(top.val);
-                if (top.left != null) {
-                    queue.offer(top.left);
-                }
-                if (top.right != null) {
-                    queue.offer(top.right);
-                }
+        return data;
+    }
+
+    public int romanToInt(String s) {
+        int res = 0;
+        res = charToInt(s.charAt(0));
+        
+        for(int i = 1; i < s.length(); i++) {
+            int pre = charToInt(s.charAt(i - 1));  
+            int cur = charToInt(s.charAt(i)); 
+            
+            if(cur <= pre) {
+//                 前一个数字大于后一个数字
+                res += cur;
+            }else {
+//                 前一个数字小于后一个数字
+                res = res - 2 * pre + cur;
             }
         }
-        resultList.add(levelStorage);
-
-        return resultList;
+        
+        return res;
     }
 }
 
@@ -100,6 +101,8 @@ public class oj102_binarytree_level_order {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		String roman = "LIV";
+		System.out.println(new Solution13().romanToInt(roman));
 	}
 
 }
