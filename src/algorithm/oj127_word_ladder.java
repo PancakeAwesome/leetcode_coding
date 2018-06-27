@@ -49,7 +49,8 @@ Explanation: The endWord "cog" is not in wordList, therefore no possible transfo
  * @author edward.guan
  *
 有大神提出了另一种方案，不需要构造邻接矩阵，思路就是将字符串中的每一个位置用‘a’~‘z’都都换一次，
-然后在查看这个字符串是否在字典里，这样就等于找到了所有字典中与原字符串相差为1的字符串。然后就是利用BFS的思想搜索。
+然后在查看这个字符串是否在字典里，这样就等于找到了所有字典中与原字符串相差为1的字符串。
+然后就是利用BFS的思想搜索。
  */
 
 class Solution127 {  
