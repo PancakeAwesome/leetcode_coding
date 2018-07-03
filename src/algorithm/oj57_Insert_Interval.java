@@ -1,82 +1,49 @@
-/**
- * 
- */
 package algorithm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
+ * 题目： 
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+You may assume that each input would have exactly one solution.
+
+Example: 
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9, 
+return [0, 1].
+
+翻译： 
+给定一个整形数组和一个整数target，返回2个元素的下标，它们满足相加的和为target。 
+你可以假定每个输入，都会恰好有一个满足条件的返回结果。
+
+Java版代码1（时间复杂度O(n)）：
  * @author edward.guan
- *【题目】
-
-Given a collection of intervals, merge all overlapping intervals.
-
-For example,
-Given [1,3],[2,6],[8,10],[15,18],
-return [1,6],[8,10],[15,18].
-
-【解析】
-题意：有很多个区间，把有重叠的区间合并。
-
-思路：分情况讨论将区间插入到结果集中。
-
-用Java自带的sort()方法，只要自己重写compare()方法即可。
-/**
- * Definition for an interval.
- * public class Interval {
- *     int start;
- *     int end;
- *     Interval() { start = 0; end = 0; }
- *     Interval(int s, int e) { start = s; end = e; }
- * }
+ *
  */
+
 class Solution57 {
-    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
-//         插入用链表比较快
-        List<Interval> res = new ArrayList<>();
-        
-        if(intervals != null) {
-            for(Interval interval: intervals) {
-//                 newInterval == null 代表插入区间已经插入到列表中了
-//                 将比插入区间小的区间插入到结果集中
-                if(newInterval == null || newInterval.start > interval.end) {
-                    res.add(interval);
-                }
-//                 将插入区间加入到结果集中
-                else if(newInterval.end < interval.start) {
-//                     链表插入操作
-                    res.add(newInterval);
-                    res.add(interval);
-                    newInterval = null;
-                }
-//                 插入区间和当前区间有重合
-                else {
-                    newInterval.start = Math.min(interval.start, newInterval.start);
-                    newInterval.end = Math.max(interval.end, newInterval.end);
-                }
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            Integer index=map.get(target-nums[i]);
+            if(index==null){
+                map.put(nums[i],i);
+            }else{
+                return new int[]{i,index};
             }
         }
-        
-//         插入区间没有插入到结果集中
-        if(newInterval != null) {
-            res.add(newInterval);
-        }
-        
-        return res;
+        return new int[]{0,0};
     }
 }
 
 public class oj57_Insert_Interval {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public static void main(String[] args) throws IOException {
+		int nums[] = new int[]{2,7,11,15};
+		int target = 9;
+        System.out.println(new Solution57().twoSum(nums, target));
+    }
 }
